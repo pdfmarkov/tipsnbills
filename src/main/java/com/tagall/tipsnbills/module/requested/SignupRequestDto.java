@@ -15,10 +15,6 @@ public class SignupRequestDto {
     private Set<String> role;
 
     @NotBlank
-    @Size(min = 6, max = 40)
-    private String password;
-
-    @NotBlank
     @Pattern(regexp = "(^$|[0-9]{12})")
     @Column(name = "phone_number")
     private String phone_number;
@@ -27,15 +23,4 @@ public class SignupRequestDto {
     @Column(name = "name_organization")
     private String name_organization;
 
-    @NotBlank
-    @Column(name = "login_name")
-    private String login_name;
-
-    @NotBlank
-    @Column(name = "agreement")
-    private String agreement;
-
-    @NotNull
-    @Column(name = "state")
-    private boolean state;
 }

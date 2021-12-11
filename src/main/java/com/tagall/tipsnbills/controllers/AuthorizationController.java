@@ -4,8 +4,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Null;
 
 import com.tagall.tipsnbills.exceptions.ResourceIsAlreadyExistsException;
 import com.tagall.tipsnbills.exceptions.ResourceIsNotValidException;
@@ -28,6 +30,10 @@ import com.tagall.tipsnbills.security.module.UserDetailsImpl;
 import com.tagall.tipsnbills.security.jwt.JwtUtils;
 import com.tagall.tipsnbills.security.services.RefreshTokenService;
 import com.tagall.tipsnbills.services.impl.EmailServiceImpl;
+import org.passay.CharacterData;
+import org.passay.CharacterRule;
+import org.passay.EnglishCharacterData;
+import org.passay.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,6 +46,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import static org.springframework.beans.MethodInvocationException.ERROR_CODE;
 
 //TODO: Comment localhost before commit
 //@CrossOrigin(origins = {"https://teambuilderproject-web.herokuapp.com/",
@@ -108,22 +116,23 @@ public class AuthorizationController {
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequestDto signUpRequest) {
 
         String username = signUpRequest.getUsername();
-        String password = signUpRequest.getPassword();
 
-        if (username == null || password == null) {
+        if (username == null) {
             throw new ResourceIsNotValidException("Username or password should not be empty");
         }
 
         if (organizationRepository.existsByUsername(signUpRequest.getUsername()))
             throw new ResourceIsAlreadyExistsException("Error: Username is already taken!");
 
+        String password  = generatePassayPassword();
+
         Organization organization = new Organization(signUpRequest.getUsername(),
-                encoder.encode(signUpRequest.getPassword()),
-                signUpRequest.getLogin_name(),
+                encoder.encode(password),
+                signUpRequest.getUsername(),
                 signUpRequest.getPhone_number(),
                 signUpRequest.getName_organization(),
-                signUpRequest.getAgreement(),
-                signUpRequest.isState());
+                null,
+                true);
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
@@ -164,5 +173,36 @@ public class AuthorizationController {
     public ResponseEntity<?> logoutUser(@Valid @RequestBody LogOutRequestDto logOutRequest) {
         refreshTokenService.deleteByOrganizationId(logOutRequest.getUserId());
         return ResponseEntity.ok(new MessageResponseDto("Log out successful!"));
+    }
+
+    private String generatePassayPassword() {
+        PasswordGenerator gen = new PasswordGenerator();
+        CharacterData lowerCaseChars = EnglishCharacterData.LowerCase;
+        CharacterRule lowerCaseRule = new CharacterRule(lowerCaseChars);
+        lowerCaseRule.setNumberOfCharacters(2);
+
+        CharacterData upperCaseChars = EnglishCharacterData.UpperCase;
+        CharacterRule upperCaseRule = new CharacterRule(upperCaseChars);
+        upperCaseRule.setNumberOfCharacters(2);
+
+        CharacterData digitChars = EnglishCharacterData.Digit;
+        CharacterRule digitRule = new CharacterRule(digitChars);
+        digitRule.setNumberOfCharacters(2);
+
+        CharacterData specialChars = new CharacterData() {
+            public String getErrorCode() {
+                return ERROR_CODE;
+            }
+
+            public String getCharacters() {
+                return "!@#$%^&*()_+";
+            }
+        };
+        CharacterRule splCharRule = new CharacterRule(specialChars);
+        splCharRule.setNumberOfCharacters(2);
+
+        String password = gen.generatePassword(10, splCharRule, lowerCaseRule,
+                upperCaseRule, digitRule);
+        return password;
     }
 }

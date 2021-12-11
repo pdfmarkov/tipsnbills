@@ -1,4 +1,4 @@
-package com.tagall.tipsnbills.logging.services;
+package com.tagall.tipsnbills.services;
 
 public interface EmailService {
     void sendSimpleMessage(String to, String subject, String text);

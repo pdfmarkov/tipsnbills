@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import com.tagall.tipsnbills.exceptions.ResourceIsAlreadyExistsException;
+import com.tagall.tipsnbills.exceptions.ResourceIsNotValidException;
 import com.tagall.tipsnbills.exceptions.ResourceNotFoundException;
 import com.tagall.tipsnbills.exceptions.TokenRefreshException;
 import com.tagall.tipsnbills.module.ERole;
@@ -26,6 +27,7 @@ import com.tagall.tipsnbills.repo.OrganizationRepository;
 import com.tagall.tipsnbills.security.module.UserDetailsImpl;
 import com.tagall.tipsnbills.security.jwt.JwtUtils;
 import com.tagall.tipsnbills.security.services.RefreshTokenService;
+import com.tagall.tipsnbills.services.impl.EmailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -105,6 +107,13 @@ public class AuthorizationController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequestDto signUpRequest) {
 
+        String username = signUpRequest.getUsername();
+        String password = signUpRequest.getPassword();
+
+        if (username == null || password == null) {
+            throw new ResourceIsNotValidException("Username or password should not be empty");
+        }
+
         if (organizationRepository.existsByUsername(signUpRequest.getUsername()))
             throw new ResourceIsAlreadyExistsException("Error: Username is already taken!");
 
@@ -143,6 +152,10 @@ public class AuthorizationController {
 
         organization.setRoles(roles);
         organizationRepository.save(organization);
+
+        EmailServiceImpl emailService = new EmailServiceImpl();
+        emailService.sendSimpleMessage(signUpRequest.getUsername(),
+                "Подтверждение почты","Компания Tips&Bills, благодарим вас за подключение нашей платформы!\n"); //TODO написать ссылку + логин + пароль
 
         return ResponseEntity.ok(new MessageResponseDto("User registered successfully!"));
     }

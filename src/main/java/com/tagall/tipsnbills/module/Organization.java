@@ -34,16 +34,16 @@ public class Organization {
 
     @NotBlank
     @Pattern(regexp="(^$|[0-9]{12})")
-    @Column(name = "phone_number")
-    private String phone_number;
+    @Column(name = "phoneNumber")
+    private String phoneNumber;
 
     @NotBlank
-    @Column(name = "name_organization")
-    private String name_organization;
+    @Column(name = "nameOrganization")
+    private String nameOrganization;
 
     @NotBlank
-    @Column(name = "login_name")
-    private String login_name;
+    @Column(name = "loginName")
+    private String loginName;
 
     @NotBlank
     @Column(name = "agreement")
@@ -62,11 +62,11 @@ public class Organization {
 
     public Organization() {}
 
-    public Organization(String username, String password, String login_name, String phone_number, String name_organization, String agreement, boolean state) {
-        this.login_name = login_name;
+    public Organization(String username, String password, String loginName, String phoneNumber, String nameOrganization, String agreement, boolean state) {
+        this.loginName = loginName;
         this.password = password;
-        this.phone_number = phone_number;
-        this.name_organization = name_organization;
+        this.phoneNumber = phoneNumber;
+        this.nameOrganization = nameOrganization;
         this.username = username;
         this.agreement = agreement;
         this.state =state;

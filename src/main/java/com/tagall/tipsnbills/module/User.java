@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,8 +24,13 @@ public class User{
 
     @NotBlank
     @Email
-    @Column(name = "email")
-    private String email;
+    @Column(name = "username")
+    private String username;
+
+    @NotBlank
+    @Size(max = 120)
+    @Column(name = "password")
+    private String password;
 
     @NotBlank
     @Pattern(regexp="(^$|[0-9]{12})")
@@ -35,21 +38,20 @@ public class User{
     private String phone_number;
 
     @NotBlank
-    @Column(name = "name")
-    private String name;
+    @Column(name = "name_organization")
+    private String name_organization;
 
     @NotBlank
-    @Column(name = "surname")
-    private String surname;
+    @Column(name = "login_name")
+    private String login_name;
 
     @NotBlank
-    @Column(name = "patronymic")
-    private String patronymic;
+    @Column(name = "agreement")
+    private String agreement;
 
-    @NotBlank
-    @Pattern(regexp="(^$|[0-9]{16})")
-    @Column(name = "card_number")
-    private String card_number;
+    @NotNull
+    @Column(name = "state")
+    private boolean state;
 
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -60,13 +62,14 @@ public class User{
 
     public User() {}
 
-    public User(String email, String phone_number,String name,String surname,String patronymic,String card_number) {
-        this.email = email;
+    public User(String username,String password,String login_name, String phone_number,String name_organization,String agreement,boolean state) {
+        this.login_name = login_name;
+        this.password = password;
         this.phone_number = phone_number;
-        this.name = name;
-        this.surname = surname;
-        this.patronymic = patronymic;
-        this.card_number =card_number;
+        this.name_organization = name_organization;
+        this.username = username;
+        this.agreement = agreement;
+        this.state =state;
     }
 
 }

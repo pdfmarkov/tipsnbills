@@ -17,9 +17,10 @@ public class WebSocketConfig
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry
                 .addEndpoint("/socket/notifications")
-                .setAllowedOrigins(
+                .setAllowedOrigins("*"
 //                        "http://localhost:8081/",
-                        "https://teambuilderproject-web.herokuapp.com/")
+//                        "https://teambuilderproject-web.herokuapp.com/"
+                        )
                 .withSockJS();
     }
 

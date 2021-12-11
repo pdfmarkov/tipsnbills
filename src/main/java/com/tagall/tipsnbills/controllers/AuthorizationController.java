@@ -40,9 +40,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 //TODO: Comment localhost before commit
-@CrossOrigin(origins = {"https://teambuilderproject-web.herokuapp.com/",
+//@CrossOrigin(origins = {"https://teambuilderproject-web.herokuapp.com/",
 //        "http://localhost:8081/"
-})
+//})
+@CrossOrigin("*") // TODO : DELETE
 @RestController
 @RequestMapping("/api/auth")
 public class AuthorizationController {
@@ -108,9 +109,12 @@ public class AuthorizationController {
             throw new ResourceIsAlreadyExistsException("Error: Username is already taken!");
 
         Organization organization = new Organization(signUpRequest.getUsername(),
-                encoder.encode(signUpRequest.getPassword()), signUpRequest.getLogin_name(),
-                signUpRequest.getPhone_number(), signUpRequest.getName_organization(),
-                signUpRequest.getAgreement(), signUpRequest.isState());
+                encoder.encode(signUpRequest.getPassword()),
+                signUpRequest.getLogin_name(),
+                signUpRequest.getPhone_number(),
+                signUpRequest.getName_organization(),
+                signUpRequest.getAgreement(),
+                signUpRequest.isState());
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();

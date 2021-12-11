@@ -6,11 +6,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import javax.validation.constraints.Pattern;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -29,44 +26,31 @@ public class User{
 
     @NotBlank
     @Email
-    @Column(name = "username")
-    private String username;
+    @Column(name = "email")
+    private String email;
 
     @NotBlank
-    @Size(max = 120)
-    @Column(name = "password")
-    private String password;
+    @Pattern(regexp="(^$|[0-9]{12})")
+    @Column(name = "phone_number")
+    private String phone_number;
 
+    @NotBlank
     @Column(name = "name")
     private String name;
 
+    @NotBlank
     @Column(name = "surname")
     private String surname;
 
-    @Column(name = "birth_date")
-    private LocalDateTime birth_date;
+    @NotBlank
+    @Column(name = "patronymic")
+    private String patronymic;
 
-    @Column(name = "description")
-    private String description;
+    @NotBlank
+    @Pattern(regexp="(^$|[0-9]{16})")
+    @Column(name = "card_number")
+    private String card_number;
 
-    @Lob
-    @Column(name = "image")
-    private byte[] image;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserChat> userChatList = new ArrayList<>();;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Message> messageList = new ArrayList<>();;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserProject> userProjectList = new ArrayList<>();
-
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "usertag",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private Set<Tag> tagList = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "userroles",
@@ -76,9 +60,13 @@ public class User{
 
     public User() {}
 
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public User(String email, String phone_number,String name,String surname,String patronymic,String card_number) {
+        this.email = email;
+        this.phone_number = phone_number;
+        this.name = name;
+        this.surname = surname;
+        this.patronymic = patronymic;
+        this.card_number =card_number;
     }
 
 }

@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -25,6 +26,9 @@ public class Characteristic {
 
     @Column(name = "rating")
     private Integer rating;
+
+    @Column(name = "time")
+    private LocalDateTime time;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id", referencedColumnName = "id")

@@ -11,9 +11,9 @@ import com.tagall.tipsnbills.exceptions.ResourceIsAlreadyExistsException;
 import com.tagall.tipsnbills.exceptions.ResourceNotFoundException;
 import com.tagall.tipsnbills.exceptions.TokenRefreshException;
 import com.tagall.tipsnbills.module.ERole;
+import com.tagall.tipsnbills.module.Organization;
 import com.tagall.tipsnbills.module.RefreshToken;
 import com.tagall.tipsnbills.module.Role;
-import com.tagall.tipsnbills.module.User;
 import com.tagall.tipsnbills.module.requested.LogOutRequestDto;
 import com.tagall.tipsnbills.module.requested.LoginRequestDto;
 import com.tagall.tipsnbills.module.requested.RefreshTokenRequestDto;
@@ -92,7 +92,7 @@ public class AuthorizationController {
 
         return refreshTokenService.findByToken(requestRefreshToken)
                 .map(refreshTokenService::verifyExpiration)
-                .map(RefreshToken::getUser)
+                .map(RefreshToken::getOrganization)
                 .map(user -> {
                     String token = jwtUtils.generateTokenFromUsername(user.getUsername());
                     return ResponseEntity.ok(new TokenRefreshResponseDto(token, requestRefreshToken));
@@ -107,7 +107,7 @@ public class AuthorizationController {
         if (userRepository.existsByUsername(signUpRequest.getUsername()))
             throw new ResourceIsAlreadyExistsException("Error: Username is already taken!");
 
-        User user = new User(signUpRequest.getUsername(),
+        Organization organization = new Organization(signUpRequest.getUsername(),
                 encoder.encode(signUpRequest.getPassword()), signUpRequest.getLogin_name(),
                 signUpRequest.getPhone_number(), signUpRequest.getName_organization(),
                 signUpRequest.getAgreement(), signUpRequest.isState());
@@ -137,15 +137,15 @@ public class AuthorizationController {
             });
         }
 
-        user.setRoles(roles);
-        userRepository.save(user);
+        organization.setRoles(roles);
+        userRepository.save(organization);
 
         return ResponseEntity.ok(new MessageResponseDto("User registered successfully!"));
     }
 
     @PostMapping("/logout")
     public ResponseEntity<?> logoutUser(@Valid @RequestBody LogOutRequestDto logOutRequest) {
-        refreshTokenService.deleteByUserId(logOutRequest.getUserId());
+        refreshTokenService.deleteByOrganizationId(logOutRequest.getUserId());
         return ResponseEntity.ok(new MessageResponseDto("Log out successful!"));
     }
 }

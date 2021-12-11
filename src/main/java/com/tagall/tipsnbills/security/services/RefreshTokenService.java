@@ -3,7 +3,7 @@ package com.tagall.tipsnbills.security.services;
 import com.tagall.tipsnbills.exceptions.TokenRefreshException;
 import com.tagall.tipsnbills.module.RefreshToken;
 import com.tagall.tipsnbills.repo.RefreshTokenRepository;
-import com.tagall.tipsnbills.repo.UserRepository;
+import com.tagall.tipsnbills.repo.OrganizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class RefreshTokenService {
     private RefreshTokenRepository refreshTokenRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private OrganizationRepository organizationRepository;
 
     public Optional<RefreshToken> findByToken(String token) {
         return refreshTokenRepository.findByToken(token);
@@ -31,7 +31,7 @@ public class RefreshTokenService {
     public RefreshToken createRefreshToken(Long organizationId) {
         RefreshToken refreshToken = new RefreshToken();
 
-        refreshToken.setOrganization(userRepository.findById(organizationId).get());
+        refreshToken.setOrganization(organizationRepository.findById(organizationId).get());
         refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
         refreshToken.setToken(UUID.randomUUID().toString());
 
@@ -50,6 +50,6 @@ public class RefreshTokenService {
 
     @Transactional
     public int deleteByOrganizationId(Long userId) {
-        return refreshTokenRepository.deleteByOrganization(userRepository.findById(userId).get());
+        return refreshTokenRepository.deleteByOrganization(organizationRepository.findById(userId).get());
     }
 }

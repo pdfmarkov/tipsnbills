@@ -1,7 +1,7 @@
 package com.tagall.tipsnbills.security.services.impl;
 
 import com.tagall.tipsnbills.module.Organization;
-import com.tagall.tipsnbills.repo.UserRepository;
+import com.tagall.tipsnbills.repo.OrganizationRepository;
 import com.tagall.tipsnbills.security.module.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,12 +14,12 @@ import javax.transaction.Transactional;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
-    UserRepository userRepository;
+    OrganizationRepository organizationRepository;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Organization organization = userRepository.findByUsername(username)
+        Organization organization = organizationRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
 
         return UserDetailsImpl.build(organization);

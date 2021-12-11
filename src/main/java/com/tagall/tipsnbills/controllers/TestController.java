@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 //TODO: Comment localhost before commit
-@CrossOrigin(origins = {"https://teambuilderproject-web.herokuapp.com/",
+//@CrossOrigin(origins = {"https://teambuilderproject-web.herokuapp.com/",
 //        "http://localhost:8081/"
-})
+//})
+@CrossOrigin("*") // TODO : DELETE
 @RestController
 @RequestMapping("/api/test")
 public class TestController {

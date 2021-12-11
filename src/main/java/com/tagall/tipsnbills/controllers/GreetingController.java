@@ -12,10 +12,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.util.HtmlUtils;
 
-@CrossOrigin(origins = {"https://teambuilderproject-web.herokuapp.com/",
+//@CrossOrigin(origins = {"https://teambuilderproject-web.herokuapp.com/",
 //        "http://localhost:8081/"
-})
+//})
 @Controller
+@CrossOrigin("*") // TODO : DELETE
 public class GreetingController {
 
     @Autowired

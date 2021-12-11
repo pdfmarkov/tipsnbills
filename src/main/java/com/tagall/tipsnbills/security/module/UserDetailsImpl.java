@@ -1,7 +1,7 @@
 package com.tagall.tipsnbills.security.module;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tagall.tipsnbills.module.User;
+import com.tagall.tipsnbills.module.Organization;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,15 +36,15 @@ public class UserDetailsImpl implements UserDetails {
         this.authorities = authorities;
     }
 
-    public static UserDetailsImpl build(User user) {
-        List<GrantedAuthority> authorities = user.getRoles().stream()
+    public static UserDetailsImpl build(Organization organization) {
+        List<GrantedAuthority> authorities = organization.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
 
         return new UserDetailsImpl(
-                user.getId(),
-                user.getUsername(),
-                user.getPassword(),
+                organization.getId(),
+                organization.getUsername(),
+                organization.getPassword(),
                 authorities);
     }
 

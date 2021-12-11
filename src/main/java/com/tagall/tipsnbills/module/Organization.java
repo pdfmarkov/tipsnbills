@@ -11,11 +11,11 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Table(name = "users",
+@Table(name = "organization",
         uniqueConstraints = {
             @UniqueConstraint(columnNames = "username")
         })
-public class User{
+public class Organization {
 
     @Id
     @Column(name = "id")
@@ -60,9 +60,9 @@ public class User{
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    public User() {}
+    public Organization() {}
 
-    public User(String username,String password,String login_name, String phone_number,String name_organization,String agreement,boolean state) {
+    public Organization(String username, String password, String login_name, String phone_number, String name_organization, String agreement, boolean state) {
         this.login_name = login_name;
         this.password = password;
         this.phone_number = phone_number;

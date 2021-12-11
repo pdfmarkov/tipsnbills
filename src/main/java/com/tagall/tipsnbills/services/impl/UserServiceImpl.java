@@ -1,6 +1,6 @@
 package com.tagall.tipsnbills.services.impl;
 
-import com.tagall.tipsnbills.module.User;
+import com.tagall.tipsnbills.module.Organization;
 import com.tagall.tipsnbills.repo.UserRepository;
 import com.tagall.tipsnbills.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +15,13 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Override
-    public Optional<User> findUserByUsername(String username) {
+    public Optional<Organization> findOrganizationByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
     @Override
-    public User saveUser(User user) {
-        return userRepository.save(user);
+    public Organization saveUser(Organization organization) {
+        return userRepository.save(organization);
     }
 
 }

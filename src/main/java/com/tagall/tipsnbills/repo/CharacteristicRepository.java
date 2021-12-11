@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface CharacteristicRepository extends JpaRepository<Characteristic, Long> {
 
-    List<Characteristic> findByEmployeeSubsidiaryNameAndTimeIsGreaterThan(String name, LocalDateTime time);
+    List<Characteristic> findByEmployeeSubsidiaryNameAndEmployeeSubsidiaryOrganizationUsernameAndTimeIsGreaterThan(String subsidiaryName, String organizationName, LocalDateTime time);
 
 }

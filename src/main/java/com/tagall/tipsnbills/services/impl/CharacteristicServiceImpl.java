@@ -16,7 +16,7 @@ public class CharacteristicServiceImpl implements CharacteristicService {
     CharacteristicRepository characteristicRepository;
 
     @Override
-    public List<Characteristic> findCharacteristicsWithSubsidiaryNameAndTime(String subsidiaryName, LocalDateTime time) {
-        return characteristicRepository.findByEmployeeSubsidiaryNameAndTimeIsGreaterThan(subsidiaryName, time);
+    public List<Characteristic> findCharacteristicsWithSubsidiaryNameAndTime(String subsidiaryName, String organizationName, LocalDateTime time) {
+        return characteristicRepository.findByEmployeeSubsidiaryNameAndEmployeeSubsidiaryOrganizationUsernameAndTimeIsGreaterThan(subsidiaryName, organizationName, time);
     }
 }

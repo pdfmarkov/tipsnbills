@@ -18,17 +18,21 @@ public class Characteristic {
     private Long id;
 
     @Column(name = "money")
-    private int money;
+    private Long money;
 
     @Column(name = "review")
     private String review;
 
     @Column(name = "rating")
-    private int rating;
+    private Integer rating;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
+    private Employee employee;
 
     public Characteristic() {}
 
-    public Characteristic(int money,String review, int rating) {
+    public Characteristic(Long money,String review, Integer rating) {
         this.money = money;
         this.review = review;
         this.rating = rating;

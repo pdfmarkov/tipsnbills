@@ -7,6 +7,10 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -45,6 +49,12 @@ public class Employee {
     @Pattern(regexp="(^$|[0-9]{16})")
     @Column(name = "cardNumber")
     private String cardNumber;
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    private Set<Characteristic> characteristics = new HashSet<>();
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    private Set<Subsidiary> subsidiary = new HashSet<>();
 
     public Employee() {}
 

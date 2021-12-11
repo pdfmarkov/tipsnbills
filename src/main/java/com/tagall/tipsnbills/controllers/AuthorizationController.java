@@ -108,7 +108,9 @@ public class AuthorizationController {
             throw new ResourceIsAlreadyExistsException("Error: Username is already taken!");
 
         User user = new User(signUpRequest.getUsername(),
-                encoder.encode(signUpRequest.getPassword()));
+                encoder.encode(signUpRequest.getPassword()), signUpRequest.getLogin_name(),
+                signUpRequest.getPhone_number(), signUpRequest.getName_organization(),
+                signUpRequest.getAgreement(), signUpRequest.isState());
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();

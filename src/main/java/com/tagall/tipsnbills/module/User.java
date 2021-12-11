@@ -4,13 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import javax.validation.constraints.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -37,36 +32,27 @@ public class User{
     @Column(name = "password")
     private String password;
 
-    @Column(name = "name")
-    private String name;
+    @NotBlank
+    @Pattern(regexp="(^$|[0-9]{12})")
+    @Column(name = "phone_number")
+    private String phone_number;
 
-    @Column(name = "surname")
-    private String surname;
+    @NotBlank
+    @Column(name = "name_organization")
+    private String name_organization;
 
-    @Column(name = "birth_date")
-    private LocalDateTime birth_date;
+    @NotBlank
+    @Column(name = "login_name")
+    private String login_name;
 
-    @Column(name = "description")
-    private String description;
+    @NotBlank
+    @Column(name = "agreement")
+    private String agreement;
 
-    @Lob
-    @Column(name = "image")
-    private byte[] image;
+    @NotNull
+    @Column(name = "state")
+    private boolean state;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserChat> userChatList = new ArrayList<>();;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Message> messageList = new ArrayList<>();;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserProject> userProjectList = new ArrayList<>();
-
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "usertag",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private Set<Tag> tagList = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "userroles",
@@ -76,9 +62,14 @@ public class User{
 
     public User() {}
 
-    public User(String username, String password) {
-        this.username = username;
+    public User(String username,String password,String login_name, String phone_number,String name_organization,String agreement,boolean state) {
+        this.login_name = login_name;
         this.password = password;
+        this.phone_number = phone_number;
+        this.name_organization = name_organization;
+        this.username = username;
+        this.agreement = agreement;
+        this.state =state;
     }
 
 }

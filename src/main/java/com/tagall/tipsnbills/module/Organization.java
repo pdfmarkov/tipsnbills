@@ -53,6 +53,8 @@ public class Organization {
     @Column(name = "state")
     private boolean state;
 
+    @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
+    private Set<Subsidiary> subsidiary = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "userroles",

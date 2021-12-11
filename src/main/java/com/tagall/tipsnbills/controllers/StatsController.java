@@ -30,10 +30,9 @@ public class StatsController {
     OrganizationService organizationService;
 
     @GetMapping("/allsum")
-    public ResponseEntity<?> getSumMoneyFromPreviousMonth() {
+    public ResponseEntity<?> getSumMoneyFromPreviousMonth(@RequestParam String subsidiaryName) {
         List<Characteristic> characteristics = characteristicService.findCharacteristicsWithSubsidiaryNameAndTime(
-                organizationService.findOrganizationByUsername(getCurrentUsername())
-                        .orElseThrow(() -> new ResourceNotFoundException("Error: Organization Not Found")).getUsername(), LocalDateTime.now().minusMonths(1));
+                subsidiaryName, getCurrentUsername(), LocalDateTime.now().minusMonths(1));
         if (characteristics.isEmpty()) return ResponseEntity.ok(0);
         Long money = 0L;
         for (Characteristic characteristic : characteristics)

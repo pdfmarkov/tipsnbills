@@ -22,7 +22,7 @@ import com.tagall.tipsnbills.module.responses.JwtResponseDto;
 import com.tagall.tipsnbills.module.responses.MessageResponseDto;
 import com.tagall.tipsnbills.module.responses.TokenRefreshResponseDto;
 import com.tagall.tipsnbills.repo.RoleRepository;
-import com.tagall.tipsnbills.repo.UserRepository;
+import com.tagall.tipsnbills.repo.OrganizationRepository;
 import com.tagall.tipsnbills.security.module.UserDetailsImpl;
 import com.tagall.tipsnbills.security.jwt.JwtUtils;
 import com.tagall.tipsnbills.security.services.RefreshTokenService;
@@ -51,7 +51,7 @@ public class AuthorizationController {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    UserRepository userRepository;
+    OrganizationRepository organizationRepository;
 
     @Autowired
     RoleRepository roleRepository;
@@ -105,7 +105,7 @@ public class AuthorizationController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequestDto signUpRequest) {
 
-        if (userRepository.existsByUsername(signUpRequest.getUsername()))
+        if (organizationRepository.existsByUsername(signUpRequest.getUsername()))
             throw new ResourceIsAlreadyExistsException("Error: Username is already taken!");
 
         Organization organization = new Organization(signUpRequest.getUsername(),
@@ -142,7 +142,7 @@ public class AuthorizationController {
         }
 
         organization.setRoles(roles);
-        userRepository.save(organization);
+        organizationRepository.save(organization);
 
         return ResponseEntity.ok(new MessageResponseDto("User registered successfully!"));
     }

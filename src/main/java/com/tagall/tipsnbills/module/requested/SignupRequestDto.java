@@ -16,11 +16,9 @@ public class SignupRequestDto {
 
     @NotBlank
     @Pattern(regexp = "(^$|[0-9]{11})")
-    @Column(name = "phone_number")
     private String phone_number;
 
     @NotBlank
-    @Column(name = "name_organization")
     private String name_organization;
 
 }

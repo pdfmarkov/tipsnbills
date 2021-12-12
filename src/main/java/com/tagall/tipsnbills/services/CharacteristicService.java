@@ -12,4 +12,5 @@ public interface CharacteristicService {
 
     Long countCharacteristicsWithSubsidiaryAndNameAndTime(String subsidiaryName, String organizationName, LocalDateTime time);
 
+    Characteristic saveCharacteristic(Characteristic characteristic);
 }

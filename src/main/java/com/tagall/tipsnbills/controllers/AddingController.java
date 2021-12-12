@@ -1,8 +1,10 @@
 package com.tagall.tipsnbills.controllers;
 
 import com.tagall.tipsnbills.exceptions.ResourceNotFoundException;
+import com.tagall.tipsnbills.module.Characteristic;
 import com.tagall.tipsnbills.module.Employee;
 import com.tagall.tipsnbills.module.Subsidiary;
+import com.tagall.tipsnbills.module.requested.CreateCharacteristicDto;
 import com.tagall.tipsnbills.module.requested.CreateEmployeeDto;
 import com.tagall.tipsnbills.module.requested.CreateSubsidiaryDto;
 import com.tagall.tipsnbills.module.responses.EmployeeResponseDto;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 
 @Controller
 @CrossOrigin("*") // TODO : DELETE
@@ -77,6 +80,29 @@ public class AddingController {
                 employeeResponse.getCardNumber(),
                 employeeResponse.getEmail()
         ));
+
+    }
+
+    @PostMapping("/feedback")
+    public ResponseEntity<?> addFeedback(@Valid @RequestBody CreateCharacteristicDto createCharacteristicDto) {
+
+        Characteristic characteristic = new Characteristic();
+
+        if (createCharacteristicDto.getReview() != null && !createCharacteristicDto.getReview().trim().equals(""))
+            characteristic.setReview(createCharacteristicDto.getReview());
+        if (createCharacteristicDto.getRating() != null && createCharacteristicDto.getRating() <= 5  && createCharacteristicDto.getRating() >= 1)
+            characteristic.setRating(createCharacteristicDto.getRating());
+        if (createCharacteristicDto.getMoney() != null && !createCharacteristicDto.getReview().trim().equals(""))
+            characteristic.setMoney(createCharacteristicDto.getMoney());
+
+        characteristic.setTime(LocalDateTime.now());
+
+        characteristic.setEmployee(employeeService.findEmployeeById(createCharacteristicDto.getEmployeeId())
+                .orElseThrow(() -> new ResourceNotFoundException("Error: Employee Not Found")));
+
+        characteristicService.saveCharacteristic(characteristic);
+
+        return ResponseEntity.ok("Feedback successfully added!");
 
     }
 

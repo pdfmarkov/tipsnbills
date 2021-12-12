@@ -15,7 +15,7 @@ public class SignupRequestDto {
     private Set<String> role;
 
     @NotBlank
-    @Pattern(regexp = "(^$|[0-9]{12})")
+    @Pattern(regexp = "(^$|[0-9]{11})")
     @Column(name = "phone_number")
     private String phone_number;
 

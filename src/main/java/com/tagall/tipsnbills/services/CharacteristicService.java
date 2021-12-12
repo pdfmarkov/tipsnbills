@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface CharacteristicService {
 
-    List<Characteristic> findCharacteristicsWithSubsidiaryNameAndTime(String subsidiaryName, LocalDateTime time);
+    List<Characteristic> findCharacteristicsWithSubsidiaryNameAndTime(String subsidiaryName, String organizationName, LocalDateTime time);
 }

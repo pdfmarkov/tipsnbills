@@ -206,7 +206,6 @@ public class AuthorizationController {
 
         String password = gen.generatePassword(10, splCharRule, lowerCaseRule,
                 upperCaseRule, digitRule);
-        System.out.println(password);
         return password;
     }
 }

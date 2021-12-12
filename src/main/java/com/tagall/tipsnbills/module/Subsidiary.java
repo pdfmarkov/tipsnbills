@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -26,8 +28,7 @@ public class Subsidiary {
     @JoinColumn(name = "organization_id", referencedColumnName = "id")
     private Organization organization;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "employee_id", referencedColumnName = "id")
-    private Employee employee;
+    @OneToMany(mappedBy = "subsidiary", cascade = CascadeType.ALL)
+    private Set<Employee> employees = new HashSet<>();
 
 }

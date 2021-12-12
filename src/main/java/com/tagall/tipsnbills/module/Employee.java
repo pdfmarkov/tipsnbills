@@ -37,7 +37,7 @@ public class Employee {
 
     @NotBlank
     @Pattern(regexp="(^$|[0-9]{11})")
-    @Column(name = "phoneNumber")
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @NotBlank
@@ -47,14 +47,15 @@ public class Employee {
 
     @NotBlank
     @Pattern(regexp="(^$|[0-9]{16})")
-    @Column(name = "cardNumber")
+    @Column(name = "card_number")
     private String cardNumber;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     private Set<Characteristic> characteristics = new HashSet<>();
 
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-    private Set<Subsidiary> subsidiary = new HashSet<>();
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "subsidiary_id", referencedColumnName = "id")
+    private Subsidiary subsidiary;
 
     public Employee() {}
 

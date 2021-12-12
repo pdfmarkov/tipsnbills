@@ -34,15 +34,15 @@ public class Organization {
 
     @NotBlank
     @Pattern(regexp="(^$|[0-9]{11})")
-    @Column(name = "phoneNumber")
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @NotBlank
-    @Column(name = "nameOrganization")
+    @Column(name = "name_organization")
     private String nameOrganization;
 
     @NotBlank
-    @Column(name = "loginName")
+    @Column(name = "login_name")
     private String loginName;
 
     @Column(name = "agreement")
@@ -53,7 +53,7 @@ public class Organization {
     private boolean state;
 
     @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
-    private Set<Subsidiary> subsidiary = new HashSet<>();
+    private Set<Subsidiary> subsidiaries = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "userroles",

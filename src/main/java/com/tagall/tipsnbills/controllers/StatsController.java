@@ -48,4 +48,13 @@ public class StatsController {
     private String getCurrentUsername() {
         return ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
     }
+
+    @GetMapping("/avgrating")
+    public ResponseEntity<?> getAvgRatingFromPreviousTwoWeeks(@RequestParam String subsidiaryName) {
+        List<Characteristic> characteristics = characteristicService.findCharacteristicsWithSubsidiaryNameAndTime(
+                subsidiaryName, getCurrentUsername(), LocalDateTime.now().minusWeeks(2));
+        if (characteristics.isEmpty()) return ResponseEntity.ok(0);
+
+        return ResponseEntity.ok(characteristics);
+    }
 }

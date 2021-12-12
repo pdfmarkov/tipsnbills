@@ -1,8 +1,6 @@
 package com.tagall.tipsnbills.controllers;
 
-import com.tagall.tipsnbills.exceptions.ResourceNotFoundException;
 import com.tagall.tipsnbills.module.Characteristic;
-import com.tagall.tipsnbills.module.responses.MessageResponseDto;
 import com.tagall.tipsnbills.services.CharacteristicService;
 import com.tagall.tipsnbills.services.OrganizationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +36,12 @@ public class StatsController {
         for (Characteristic characteristic : characteristics)
             money += characteristic.getMoney();
         return ResponseEntity.ok(money);
+    }
+
+    @GetMapping("/countfeedback")
+    public ResponseEntity<?> getCountFeedbackFromPreviousMonth(@RequestParam String subsidiaryName) {
+        return ResponseEntity.ok(characteristicService.countCharacteristicsWithSubsidiaryAndNameAndTime(
+                subsidiaryName, getCurrentUsername(), LocalDateTime.now().minusMonths(1)));
     }
 
 

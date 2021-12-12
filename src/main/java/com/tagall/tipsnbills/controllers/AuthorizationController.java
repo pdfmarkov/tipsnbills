@@ -29,6 +29,7 @@ import com.tagall.tipsnbills.repo.OrganizationRepository;
 import com.tagall.tipsnbills.security.module.UserDetailsImpl;
 import com.tagall.tipsnbills.security.jwt.JwtUtils;
 import com.tagall.tipsnbills.security.services.RefreshTokenService;
+import com.tagall.tipsnbills.services.EmailService;
 import com.tagall.tipsnbills.services.impl.EmailServiceImpl;
 import org.passay.CharacterData;
 import org.passay.CharacterRule;
@@ -74,6 +75,9 @@ public class AuthorizationController {
 
     @Autowired
     JwtUtils jwtUtils;
+
+    @Autowired
+    EmailService emailService;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequestDto loginRequestDto) {
@@ -162,7 +166,6 @@ public class AuthorizationController {
         organization.setRoles(roles);
         organizationRepository.save(organization);
 
-        EmailServiceImpl emailService = new EmailServiceImpl();
         emailService.sendSimpleMessage(signUpRequest.getUsername(),
                 "Подтверждение почты","Компания Tips&Bills, благодарим вас за подключение нашей платформы!\n"); //TODO написать ссылку + логин + пароль
 

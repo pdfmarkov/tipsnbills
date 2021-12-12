@@ -38,7 +38,7 @@ public class QiwiPaymentController {
     @Autowired
     OrganizationService organizationService;
 
-    private final BillPaymentClient client = BillPaymentClientFactory.createDefault("secretKey");
+    private final BillPaymentClient client = BillPaymentClientFactory.createDefault("qiwi.secret.key");
 
     @PostMapping("/payment")
     public ResponseEntity<?> paymentChai(@Valid @RequestBody LeaveTipDto leaveTipDto) {
@@ -56,7 +56,7 @@ public class QiwiPaymentController {
         );
 
         String billId = UUID.randomUUID().toString();
-        String paymentUrl = client.createPaymentForm(new PaymentInfo("48e7qUxn9T7RyYE1MVZswX1FRSbE6iyCj2gCRwwF3Dnh5XrasNTx3BGPiMsyXQFNKQhvukniQG8RTVhYm3iP6yRbniW1HhRUAZWfdGa6EWd2zz8sW3HrCDjrfyZX1rdN6N7mrCZwSrXLR79r37JHhH45uFBckEhiEUYbQwTyvJ63BVQFFeVVz39oySRLi", amount, billId, "https://tipsnbills.herokuapp.com"));
+        String paymentUrl = client.createPaymentForm(new PaymentInfo("qiwi.public.key", amount, billId, "https://tipsnbills.herokuapp.com"));
         return paymentUrl;
 
     }

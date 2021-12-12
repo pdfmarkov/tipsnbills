@@ -26,6 +26,11 @@ public class CharacteristicServiceImpl implements CharacteristicService {
     }
 
     @Override
+    public Double avgRatingByEmployeeId(Long id) {
+        return characteristicRepository.avgRatingByEmployeeId(id);
+    }
+
+    @Override
     public Characteristic saveCharacteristic(Characteristic characteristic) {
         return characteristicRepository.save(characteristic);
     }

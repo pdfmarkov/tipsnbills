@@ -24,4 +24,9 @@ public class CharacteristicServiceImpl implements CharacteristicService {
     public Long countCharacteristicsWithSubsidiaryAndNameAndTime(String subsidiaryName, String organizationName, LocalDateTime time) {
         return characteristicRepository.countByEmployeeSubsidiaryNameAndEmployeeSubsidiaryOrganizationUsernameAndTimeIsGreaterThan(subsidiaryName, organizationName, time);
     }
+
+    @Override
+    public Characteristic saveCharacteristic(Characteristic characteristic) {
+        return characteristicRepository.save(characteristic);
+    }
 }

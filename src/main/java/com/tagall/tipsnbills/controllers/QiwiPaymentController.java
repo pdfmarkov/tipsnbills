@@ -11,6 +11,7 @@ import com.tagall.tipsnbills.module.Organization;
 import com.tagall.tipsnbills.module.requested.LeaveTipDto;
 import com.tagall.tipsnbills.module.requested.RefreshTokenRequestDto;
 import com.tagall.tipsnbills.services.OrganizationService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,6 +32,7 @@ import java.util.UUID;
 @Controller
 @CrossOrigin("*") // TODO : DELETE
 @RequestMapping("/api/qiwi")
+@Log4j2
 public class QiwiPaymentController {
     @Autowired
     OrganizationService organizationService;
@@ -61,14 +63,15 @@ public class QiwiPaymentController {
                         organization.getPhoneNumber()
                 ),
                 "https://tipsnbills.herokuapp.com/");
+        log.info(billInfo);
         BillResponse billResponse = null;
         try {
             billResponse = client.createBill(billInfo);
+            log.info(billResponse);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
         if (billResponse != null) {
-            System.out.println(billResponse.getPayUrl());
             return billResponse.getPayUrl();
         } else {
             return null;

@@ -60,17 +60,16 @@ public class StatsController {
         List<Characteristic> characteristics = characteristicService.findCharacteristicsWithSubsidiaryNameAndTime(
                 subsidiaryName, getCurrentUsername(), LocalDateTime.now().minusWeeks(2));
         if (characteristics.isEmpty()) throw new ResourceNotFoundException("Error: Characteristics Not Found");
-        List<Long> avgRatingList = new ArrayList<>();
-        List<Integer> tempRatingList = new ArrayList<>();
+        List<Double> avgRatingList = new ArrayList<>();
         LocalDateTime endDate, startDate;
-        Long temp;
+        Double temp;
         int size;
 
 
         for (int i = 13; i >= 0; i-- ) {
             endDate = LocalDateTime.now().minusDays(i);
             startDate = LocalDateTime.now().minusDays(i+1);
-            temp = 0L; size = 0;
+            temp = 0.0; size = 0;
             for (Characteristic characteristic : characteristics)
                 if (characteristic.getTime().compareTo(startDate) > 0 && characteristic.getTime().compareTo(endDate) < 0) {
                     size++;

@@ -5,6 +5,7 @@ import com.qiwi.billpayments.sdk.client.BillPaymentClientFactory;
 import com.qiwi.billpayments.sdk.model.MoneyAmount;
 import com.qiwi.billpayments.sdk.model.in.CreateBillInfo;
 import com.qiwi.billpayments.sdk.model.in.Customer;
+import com.qiwi.billpayments.sdk.model.in.PaymentInfo;
 import com.qiwi.billpayments.sdk.model.out.BillResponse;
 import com.tagall.tipsnbills.exceptions.ResourceNotFoundException;
 import com.tagall.tipsnbills.module.Organization;
@@ -49,33 +50,15 @@ public class QiwiPaymentController {
         Organization organization = organizationService.findOrganizationByUsername(getCurrentUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("Error: Organization Not Found"));
 
-        CreateBillInfo billInfo = new CreateBillInfo(
-                UUID.randomUUID().toString(),
-                new MoneyAmount(
-                        BigDecimal.valueOf(money),
-                        Currency.getInstance("RUB")
-                ),
-                "Оплата чаевых",
-                ZonedDateTime.now().plusDays(1),
-                new Customer(
-                        organization.getUsername(),
-                        UUID.randomUUID().toString(),
-                        organization.getPhoneNumber()
-                ),
-                "https://tipsnbills.herokuapp.com/");
-        log.info(billInfo);
-        BillResponse billResponse = null;
-        try {
-            billResponse = client.createBill(billInfo);
-            log.info(billResponse);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        if (billResponse != null) {
-            return billResponse.getPayUrl();
-        } else {
-            return null;
-        }
+        MoneyAmount amount = new MoneyAmount(
+                BigDecimal.valueOf(money),
+                Currency.getInstance("RUB")
+        );
+
+        String billId = UUID.randomUUID().toString();
+        String paymentUrl = client.createPaymentForm(new PaymentInfo("48e7qUxn9T7RyYE1MVZswX1FRSbE6iyCj2gCRwwF3Dnh5XrasNTx3BGPiMsyXQFNKQhvukniQG8RTVhYm3iP6yRbniW1HhRUAZWfdGa6EWd2zz8sW3HrCDjrfyZX1rdN6N7mrCZwSrXLR79r37JHhH45uFBckEhiEUYbQwTyvJ63BVQFFeVVz39oySRLi", amount, billId, "https://tipsnbills.herokuapp.com"));
+        return paymentUrl;
+
     }
 
     public void getStatus(String orderId) {

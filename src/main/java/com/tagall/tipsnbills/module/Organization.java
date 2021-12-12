@@ -33,7 +33,7 @@ public class Organization {
     private String password;
 
     @NotBlank
-    @Pattern(regexp="(^$|[0-9]{12})")
+    @Pattern(regexp="(^$|[0-9]{11})")
     @Column(name = "phoneNumber")
     private String phoneNumber;
 
@@ -45,7 +45,6 @@ public class Organization {
     @Column(name = "loginName")
     private String loginName;
 
-    @NotBlank
     @Column(name = "agreement")
     private String agreement;
 

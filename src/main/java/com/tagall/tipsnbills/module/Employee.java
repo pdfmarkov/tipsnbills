@@ -31,11 +31,9 @@ public class Employee {
     @Column(name = "surname")
     private String surname;
 
-    @NotBlank
     @Column(name = "patronymic")
     private String patronymic;
 
-    @NotBlank
     @Pattern(regexp="(^$|[0-9]{11})")
     @Column(name = "phone_number")
     private String phoneNumber;

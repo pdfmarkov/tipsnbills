@@ -14,17 +14,13 @@ import javax.validation.constraints.Pattern;
 public class CreateEmployeeDto {
 
     @NotBlank
+    private Long subsidiaryId;
+
+    @NotBlank
     private String name;
 
     @NotBlank
     private String surname;
-
-    @NotBlank
-    private String patronymic;
-
-    @NotBlank
-    @Pattern(regexp="(^$|[0-9]{11})")
-    private String phoneNumber;
 
     @NotBlank
     @Email

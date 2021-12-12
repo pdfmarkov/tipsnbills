@@ -13,4 +13,5 @@ public interface CharacteristicRepository extends JpaRepository<Characteristic, 
 
     List<Characteristic> findByEmployeeSubsidiaryNameAndEmployeeSubsidiaryOrganizationUsernameAndTimeIsGreaterThan(String subsidiaryName, String organizationName, LocalDateTime time);
 
+    Long countByEmployeeSubsidiaryNameAndEmployeeSubsidiaryOrganizationUsernameAndTimeIsGreaterThan(String subsidiaryName, String organizationName, LocalDateTime time);
 }

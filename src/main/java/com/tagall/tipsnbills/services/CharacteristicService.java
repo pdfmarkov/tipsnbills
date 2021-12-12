@@ -9,4 +9,7 @@ import java.util.List;
 public interface CharacteristicService {
 
     List<Characteristic> findCharacteristicsWithSubsidiaryNameAndTime(String subsidiaryName, String organizationName, LocalDateTime time);
+
+    Long countCharacteristicsWithSubsidiaryAndNameAndTime(String subsidiaryName, String organizationName, LocalDateTime time);
+
 }

@@ -128,7 +128,7 @@ public class AuthorizationController {
         if (organizationRepository.existsByUsername(signUpRequest.getUsername()))
             throw new ResourceIsAlreadyExistsException("Error: Username is already taken!");
 
-        String password  = generatePassayPassword();
+        String password = generatePassayPassword();
 
         Organization organization = new Organization(signUpRequest.getUsername(),
                 encoder.encode(password),
@@ -167,7 +167,11 @@ public class AuthorizationController {
         organizationRepository.save(organization);
 
         emailService.sendSimpleMessage(signUpRequest.getUsername(),
-                "Подтверждение почты","Компания Tips&Bills, благодарим вас за подключение нашей платформы!\n"); //TODO написать ссылку + логин + пароль
+                "Подтверждение почты",
+                "Компания Tips&Bills, благодарим вас за подключение нашей платформы!\n" +
+                        "Ваш логин: " + signUpRequest.getUsername() + "\n" +
+                        "Ваш пароль: " + password + "\n" +
+                        "Ссылка на личный кабинет: "); //TODO написать ссылку
 
         return ResponseEntity.ok(new MessageResponseDto("User registered successfully!"));
     }

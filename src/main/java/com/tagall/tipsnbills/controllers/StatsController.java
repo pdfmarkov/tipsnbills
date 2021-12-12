@@ -1,6 +1,7 @@
 package com.tagall.tipsnbills.controllers;
 
 import com.tagall.tipsnbills.module.Characteristic;
+import com.tagall.tipsnbills.module.responses.AvgResponseDto;
 import com.tagall.tipsnbills.services.CharacteristicService;
 import com.tagall.tipsnbills.services.OrganizationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,11 +51,11 @@ public class StatsController {
     }
 
     @GetMapping("/avgrating")
-    public ResponseEntity<?> getAvgRatingFromPreviousTwoWeeks(@RequestParam String subsidiaryName) {
+    public AvgResponseDto getAvgRatingFromPreviousTwoWeeks(@RequestParam String subsidiaryName) {
         List<Characteristic> characteristics = characteristicService.findCharacteristicsWithSubsidiaryNameAndTime(
                 subsidiaryName, getCurrentUsername(), LocalDateTime.now().minusWeeks(2));
-        if (characteristics.isEmpty()) return ResponseEntity.ok(0);
+        if (characteristics.isEmpty()) return new AvgResponseDto(null);
 
-        return ResponseEntity.ok(characteristics);
+        return new AvgResponseDto(characteristics);
     }
 }
